@@ -207,10 +207,10 @@ local func = function(settings, self, unit)
 		self.Info = info
 	end
 
-	if(unit ~= 'player') then
+	if(unit ~= 'player' and unit ~= 'targettarget') then
 		-- Buffs
 		local buffs = CreateFrame("Frame", nil, self)
-		buffs:SetPoint("BOTTOM", self, "TOP")
+		buffs:SetPoint("TOP", self, "BOTTOM")
 		buffs:SetHeight(17)
 		buffs:SetWidth(width)
 
@@ -225,7 +225,7 @@ local func = function(settings, self, unit)
 		debuffs:SetHeight(20)
 		debuffs:SetWidth(width)
 
-		debuffs.initialAnchor = "TOPLEFT"
+		debuffs.initialAnchor = "TOPRIGHT"
 		debuffs.size = 20
 		debuffs.showDebuffType = true
 		debuffs.num = math.floor(width / debuffs.size + .5)
@@ -234,7 +234,7 @@ local func = function(settings, self, unit)
 	else
 		self:RegisterEvent("PLAYER_UPDATE_RESTING", function(self)
 			if(IsResting()) then
-				self:SetBackdropBorderColor(.3, .3, .8)
+				--self:SetBackdropBorderColor(.3, .3, .8)
 			else
 				local r, g, b = UnitSelectionColor(unit)
 				self:SetBackdropBorderColor(r, g, b)
@@ -275,13 +275,13 @@ oUF:SetActiveStyle"Classic"
 
 -- :Spawn(unit, frame_name, isPet) --isPet is only used on headers.
 local player = oUF:Spawn"player"
-player:SetPoint("CENTER", -200, -380)
+player:SetPoint("CENTER", -135, -380)
 
 local pet = oUF:Spawn"pet"
 pet:SetPoint('TOP', player, 'BOTTOM', 0, -16)
 
 local target = oUF:Spawn"target"
-target:SetPoint("CENTER", 200, -380)
+target:SetPoint("CENTER", 135, -380)
 
 local party = oUF:Spawn("header", "oUF_Party")
 party:SetPoint("TOPLEFT", 30, -30)
@@ -299,4 +299,4 @@ party:Show()
 oUF:SetActiveStyle"Classic - Small"
 
 local tot = oUF:Spawn"targettarget"
-tot:SetPoint("CENTER", 0, -250)
+tot:SetPoint("TOP", target, "TOP", 0, 30)
