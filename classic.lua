@@ -47,12 +47,15 @@ if(not oUF.Tags['[happiness]']) then
 end
 
 local siValue = function(val)
-	if(val >= 1e4) then
+	if(val >= 1e6) then
+		return ('%.1f'):format(val / 1e6):gsub('%.', 'm')
+	elseif(val >= 1e4) then
 		return ("%.1f"):format(val / 1e3):gsub('%.', 'k')
 	else
 		return val
 	end
 end
+
 
 local PostUpdateHealth = function(self, event, unit, bar, min, max)
 	if(UnitIsTapped(unit) and not UnitIsTappedByPlayer(unit) or not UnitIsConnected(unit)) then
@@ -71,7 +74,7 @@ local PostUpdateHealth = function(self, event, unit, bar, min, max)
 	elseif(not UnitIsConnected(unit)) then
 		bar.value:SetText"Offline"
 	else
-		bar.value:SetFormattedText('%s/%s', siValue(min), siValue(max))
+		bar.value:SetFormattedText('%s (%s%%)', siValue(min), math.floor(UnitHealth(unit)/max*100+0.5))
 	end
 end
 
